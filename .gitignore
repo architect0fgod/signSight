@@ -1,0 +1,20 @@
+# Python
+__pycache__/
+*.py[cod]
+*.so
+.pytest_cache/
+.venv/
+venv/
+.env
+
+# Model artifacts (large, generated)
+model/artifacts/*.joblib
+model/artifacts/*.json
+model/artifacts/*.csv
+
+# Datasets (large, not tracked)
+datasets/*.zip
+datasets/cicimp/*.csv
+datasets/*/MachineLearningCVE/
+datasets/*/unsw/
+# Keep the improved CIC dataset scripts

@@ -10,11 +10,54 @@ working days, 78 engineered features.
 
 ---
 
+## One-shot setup (recommended)
+
+```bash
+# Creates .venv, installs deps, downloads CICIDS2017-improved dataset
+./prepare.sh
+
+# Activate the environment
+source .venv/bin/activate
+```
+
+**Options:**
+| Flag | Effect |
+|------|--------|
+| `--skip-dataset` | Skip dataset download (use existing `datasets/cicimp/`) |
+| `--skip-unsw` | Skip optional UNSW-NB15 supplementary downloads |
+| `--python=python3.11` | Use a specific Python binary for the venv |
+
+---
+
+## Manual setup
+
+### 1. Python environment
+
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+pip install --upgrade pip setuptools wheel
+pip install -r requirements.txt
+```
+
+### 2. Dataset (CICIDS2017-improved)
+
+```bash
+# Downloads Mon–Fri CSVs into datasets/cicimp/
+./datasets/data.sh
+
+# Or skip the optional UNSW-NB15 mirrors
+./datasets/data.sh --skip-unsw
+```
+
+The script fetches from the official DistriNet mirror, extracts the zip,
+renames `Monday.csv` → `monday.csv` (etc.), and verifies all five files.
+
+---
+
 ## Quick start
 
 ```bash
-pip install -r requirements.txt
-
 # full leave-one-day-out evaluation + production artefact (~10 min)
 python -m model.train
 
@@ -29,6 +72,12 @@ python -m model.train --strategy holdout
 python -m model.infer --input flows.csv --summary
 python -m model.infer --input flows.csv --format ndjson > alerts.jsonl
 python -m model.infer --json '{"Src IP":"10.0.0.5","Dst Port":4444,"Flow Duration":120}'
+```
+
+### Run unit tests
+
+```bash
+python -m pytest tests/test_model.py -v
 ```
 
 Artefacts land in `model/artifacts/`:
